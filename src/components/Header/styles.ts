@@ -14,12 +14,12 @@ export const TitleContainer = styled.View``
 export const Span = styled.Text`
   font-family: ${({ theme }) => theme.fontFamily.regular};
   color: ${({ theme }) => theme.colors['gray-200']};
-  font-size: ${({ theme }) => theme.fontSize.md};
+  font-size: ${({ theme }) => theme.fontSize.md}px;
 `
 export const Text = styled.Text`
   font-family: ${({ theme }) => theme.fontFamily.bold};
   color: ${({ theme }) => theme.colors['gray-100']};
-  font-size: ${({ theme }) => theme.fontSize.xl};
+  font-size: ${({ theme }) => theme.fontSize.xl}px;
 `
 
 export const IconButton = styled.TouchableOpacity``
