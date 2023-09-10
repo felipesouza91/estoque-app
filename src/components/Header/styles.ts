@@ -2,7 +2,7 @@ import { Feather } from '@expo/vector-icons'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import styled from 'styled-components/native'
 export const Container = styled(SafeAreaView)`
-  padding: 20px 32px;
+  padding: 40px 32px 20px 32px;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
