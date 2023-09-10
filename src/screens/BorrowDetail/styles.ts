@@ -1,6 +1,7 @@
 import { Ionicons } from '@expo/vector-icons'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import styled from 'styled-components/native'
+import Button from '../../components/Button'
 interface ITitleProps {
   isOpen: boolean
 }
@@ -9,7 +10,7 @@ interface IIconProps {
 }
 export const Container = styled(SafeAreaView)`
   flex: 1;
-  background-color: ${({ theme }) => theme.colors['gray-600']};
+  background-color: ${({ theme }) => theme.colors['gray-700']};
 `
 export const StatusTag = styled.View`
   flex-direction: row;
@@ -42,4 +43,19 @@ export const Title = styled.Text<ITitleProps>`
   text-transform: uppercase;
   color: ${({ theme, isOpen }) =>
     isOpen ? theme.colors['secondary-700'] : theme.colors['green-300']};
+`
+
+export const Content = styled.ScrollView.attrs({
+  contentContainerStyle: {
+    gap: 20,
+    flex: 1,
+  },
+})`
+  padding: 20px 24px 20px 24px;
+  flex: 1;
+  gap: 20px;
+`
+
+export const ButtonWrapper = styled(Button)`
+  margin-top: auto;
 `
