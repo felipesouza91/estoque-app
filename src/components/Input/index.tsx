@@ -11,7 +11,7 @@ interface IInputProps extends TextInputProps {
 const Input: React.FC<IInputProps> = ({ icon, ...rest }) => {
   return (
     <Container>
-      {icon && <Icon name="mail" size={24} />}
+      {icon && <Icon name={icon} size={24} />}
       <TextInput {...rest} />
     </Container>
   )
