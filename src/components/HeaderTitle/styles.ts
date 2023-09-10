@@ -2,10 +2,11 @@ import { Feather } from '@expo/vector-icons'
 
 import styled from 'styled-components/native'
 export const Header = styled.View`
-  padding: 20px 32px;
+  padding: 40px 32px 20px 32px;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  background-color: ${({ theme }) => theme.colors['gray-600']};
 `
 
 export const IconButton = styled.TouchableOpacity``
