@@ -6,8 +6,7 @@ import {
 } from '@expo-google-fonts/roboto'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { ThemeProvider } from 'styled-components'
-import Header from './src/components/Header'
-import { Home } from './src/screens/Home'
+import { BorrowDetail } from './src/screens/BorrowDetail'
 import { theme } from './src/theme'
 
 export default function App() {
@@ -20,8 +19,7 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <SafeAreaProvider>
-        <Header />
-        <Home />
+        <BorrowDetail />
       </SafeAreaProvider>
     </ThemeProvider>
   )
