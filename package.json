@@ -20,7 +20,10 @@
     "react-native-signature-canvas": "^4.6.1",
     "react-native-svg": "13.9.0",
     "styled-components": "^6.0.7",
-    "react-native-screens": "~3.22.0"
+    "react-native-screens": "~3.22.0",
+    "expo-auth-session": "~5.0.2",
+    "expo-crypto": "~12.4.1",
+    "expo-web-browser": "~12.3.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
