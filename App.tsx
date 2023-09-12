@@ -7,7 +7,7 @@ import {
 import { StatusBar } from 'expo-status-bar'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { ThemeProvider } from 'styled-components'
-import { BorrowDetail } from './src/screens/BorrowDetail'
+import { SignIn } from './src/screens/SignIn'
 import { theme } from './src/theme'
 
 export default function App() {
@@ -24,7 +24,7 @@ export default function App() {
           translucent
           backgroundColor={theme.colors['gray-600']}
         />
-        <BorrowDetail />
+        <SignIn />
       </SafeAreaProvider>
     </ThemeProvider>
   )
