@@ -1,7 +1,6 @@
 import React from 'react'
 import { View } from 'react-native'
 import { Header, Icon, IconButton, Title } from './styles'
-
 interface IHeaderTitleProps {
   title: string
 }
