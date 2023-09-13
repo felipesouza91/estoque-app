@@ -6,6 +6,8 @@ export const Container = styled(SafeAreaView)`
   padding: 0 24px;
 `
 
+export const PressWrapper = styled.TouchableOpacity``
+
 export const BorrowingList = styled.FlatList.attrs({
   showsVerticalScrollIndicator: false,
   contentContainerStyle: {
