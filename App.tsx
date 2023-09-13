@@ -7,6 +7,7 @@ import {
 import { StatusBar } from 'expo-status-bar'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { ThemeProvider } from 'styled-components'
+import { AppRoutes } from './src/routes'
 import { SignIn } from './src/screens/SignIn'
 import { theme } from './src/theme'
 
@@ -15,7 +16,7 @@ export default function App() {
   if (!fontsLoaded) {
     return null
   }
-
+  const isLogin = true
   return (
     <ThemeProvider theme={theme}>
       <SafeAreaProvider>
@@ -24,7 +25,7 @@ export default function App() {
           translucent
           backgroundColor={theme.colors['gray-600']}
         />
-        <SignIn />
+        {isLogin ? <AppRoutes /> : <SignIn />}
       </SafeAreaProvider>
     </ThemeProvider>
   )
