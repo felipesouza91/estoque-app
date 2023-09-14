@@ -1,10 +1,21 @@
-import { createStackNavigator } from '@react-navigation/stack'
+import {
+  StackNavigationProp,
+  createStackNavigator,
+} from '@react-navigation/stack'
 import React from 'react'
 import { BorrowDetail } from '../screens/BorrowDetail'
 import { Home } from '../screens/Home'
 import { NewBorrow } from '../screens/NewBorrow'
 
-const Stack = createStackNavigator()
+type IRootStackParamList = {
+  Home: undefined
+  NewBorrow: undefined
+  BorrowDetail: { data: any }
+}
+
+export type AppStackNavigationProp = StackNavigationProp<IRootStackParamList>
+
+const Stack = createStackNavigator<IRootStackParamList>()
 
 const AppStackRouter: React.FC = () => {
   return (

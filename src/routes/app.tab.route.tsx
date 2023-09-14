@@ -1,7 +1,6 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import React from 'react'
-import { Platform } from 'react-native'
 import { useTheme } from 'styled-components'
 import { History } from '../screens/History'
 import { AppStackRouter } from './app.stack.route'
@@ -18,7 +17,6 @@ const AppTabRoutes: React.FC = () => {
         tabBarStyle: {
           height: 70,
           backgroundColor: theme.colors['gray-500'],
-          paddingVertical: Platform.OS === 'ios' ? 20 : 0,
         },
         tabBarLabelStyle: {
           fontFamily: theme.fontFamily.regular,
