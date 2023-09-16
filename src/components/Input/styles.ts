@@ -11,13 +11,16 @@ interface IIconProps {
   isError?: boolean
 }
 
-export const Container = styled.View<IContainerProps>`
+export const Container = styled.View`
+  gap: 5px;
+`
+
+export const InputContainer = styled.View<IContainerProps>`
   background-color: ${({ theme }) => theme.colors['gray-700']};
   padding: 16px;
-  flex-direction: row;
   gap: 8px;
   border-radius: 8px;
-  align-items: center;
+  flex-direction: row;
   ${({ theme, isFocused }) =>
     isFocused &&
     css`
@@ -26,7 +29,7 @@ export const Container = styled.View<IContainerProps>`
   ${({ theme, isError }) =>
     isError &&
     css`
-      border: 1px solid ${theme.colors['red-500']};
+      border: 1px solid ${theme.colors['red-700']};
     `}
 `
 
@@ -40,7 +43,7 @@ export const Icon = styled(Feather)<IIconProps>`
   ${({ theme, isError }) =>
     isError &&
     css`
-      color: ${theme.colors['red-500']};
+      color: ${theme.colors['red-700']};
     `}
 `
 
@@ -52,4 +55,10 @@ export const TextInput = styled.TextInput.attrs(({ theme }) => ({
   font-size: ${({ theme }) => theme.fontSize.lg}px;
   color: ${({ theme }) => theme.colors['gray-200']};
   line-height: ${({ theme }) => theme.fontSize.lg * 1.6}px;
+`
+
+export const ErrorMessage = styled.Text`
+  font-family: ${({ theme }) => theme.fontFamily.regular};
+  font-size: ${({ theme }) => theme.fontSize.sm}px;
+  color: ${({ theme }) => theme.colors['red-500']};
 `
