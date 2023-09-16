@@ -13,9 +13,10 @@ export const Form = styled.ScrollView.attrs({
     alignItems: 'stretch',
     justifyContent: 'space-between',
     marginBottom: 10,
+    gap: 10,
   },
 })`
-  padding: 10px 32px;
+  padding: 10px 32px 0 32px;
 `
 
 export const InputForm = styled.View`
