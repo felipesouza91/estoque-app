@@ -6,20 +6,21 @@ import * as yup from 'yup'
 import Button from '../../components/Button'
 import HeaderTitle from '../../components/HeaderTitle'
 import { Input } from '../../components/Input'
+import { InputSearch } from '../../components/InputSearch'
 import Signature from '../../components/Signature'
 import { Container, Form, InputForm } from './styles'
 
 const formSchema = yup.object({
-  clientName: yup.string().required('O campo é obrigatório'),
-  productCode: yup.string().required('O campo é obrigatório'),
-  technicianName: yup.string().required('O campo é obrigatório'),
+  client: yup.string().required('O campo é obrigatório'),
+  product: yup.string().required('O campo é obrigatório'),
+  technician: yup.string().required('O campo é obrigatório'),
   orderNumber: yup.number(),
 })
 
 type FormSchemaData = yup.InferType<typeof formSchema>
 
 const NewBorrow: React.FC = () => {
-  const [showModal, setShowModal] = useState(false)
+  const [showSignatureModal, setShowSignatureModal] = useState(false)
   const {
     control,
     watch,
@@ -30,11 +31,11 @@ const NewBorrow: React.FC = () => {
   })
 
   function handleSignature(status: boolean) {
-    setShowModal(status)
+    setShowSignatureModal(status)
   }
 
   function handleComplete(uri?: string) {
-    setShowModal(false)
+    setShowSignatureModal(false)
     if (!uri) {
       Alert.alert('Atenção', 'Assianura do técnico é obrigatória')
       return
@@ -44,52 +45,56 @@ const NewBorrow: React.FC = () => {
   }
 
   function handleValidateAndSignature(data: string) {
+    console.log(data)
     handleSignature(true)
+  }
+
+  function searchCliente(query: string) {
+    return [1, 2, 3, 4, 5, 6].filter((item) => Number(query) === item)
   }
 
   return (
     <Container>
-      <Signature visible={showModal} onComplete={handleComplete} />
       <HeaderTitle title="Nova Saida" />
+      <Signature visible={showSignatureModal} onComplete={handleComplete} />
       <Form>
         <InputForm>
           <Controller
-            name="clientName"
+            name="client"
             control={control}
             render={({ field: { onChange, onBlur, value } }) => (
-              <Input
-                placeholder="Nome do Cliente"
-                onBlur={onBlur}
+              <InputSearch
+                placeholder="Selecione o cliente"
                 value={value}
-                onChangeText={onChange}
-                errorMessage={errors?.clientName?.message}
+                searchFunction={searchCliente}
+                onSelectItem={onChange}
+                errorMessage={errors.client?.message}
               />
             )}
           />
           <Controller
-            name="productCode"
+            name="technician"
             control={control}
             render={({ field: { onChange, onBlur, value } }) => (
-              <Input
-                placeholder="Codigo do equipamento"
-                onBlur={onBlur}
+              <InputSearch
+                placeholder="Selecione o técnico"
                 value={value}
-                onChangeText={onChange}
-                errorMessage={errors?.productCode?.message}
+                searchFunction={searchCliente}
+                onSelectItem={onChange}
+                errorMessage={errors.technician?.message}
               />
             )}
           />
-
           <Controller
-            name="technicianName"
+            name="product"
             control={control}
             render={({ field: { onChange, onBlur, value } }) => (
-              <Input
-                placeholder="Nome do Tecnico"
-                onBlur={onBlur}
+              <InputSearch
+                placeholder="Selecione o produto"
                 value={value}
-                onChangeText={onChange}
-                errorMessage={errors?.technicianName?.message}
+                searchFunction={searchCliente}
+                onSelectItem={onChange}
+                errorMessage={errors.product?.message}
               />
             )}
           />
