@@ -12,7 +12,9 @@ export const PressWrapper = styled.TouchableOpacity``
 export const BorrowingList = styled.FlatList.attrs({
   showsVerticalScrollIndicator: false,
   contentContainerStyle: {
-    paddingBottom: 20,
+    paddingBottom: 10,
+    flexGrow: 1,
+    justifyContent: 'center',
   },
 })``
 
