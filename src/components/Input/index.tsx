@@ -1,7 +1,7 @@
 import { Feather } from '@expo/vector-icons'
 import type { Icon as Icon_ } from '@expo/vector-icons/build/createIconSet'
 import React from 'react'
-import { TextInputProps } from 'react-native/types'
+import { TextInputProps } from 'react-native'
 import {
   Container,
   ErrorMessage,
@@ -14,7 +14,6 @@ interface IInputProps extends TextInputProps {
   icon?: typeof Feather extends Icon_<infer Type, string> ? Type : never
   errorMessage?: string
 }
-
 const Input: React.FC<IInputProps> = ({ errorMessage, icon, ...rest }) => {
   return (
     <Container>
