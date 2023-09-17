@@ -1,6 +1,7 @@
 import { useNavigation } from '@react-navigation/native'
 import React from 'react'
 import { BorrowingItem } from '../../components/BorrowingItem'
+import EmptyList from '../../components/EmptyList'
 import Header from '../../components/Header'
 import { AppStackNavigationProp } from '../../routes/app.stack.route'
 import {
@@ -35,6 +36,9 @@ const Home: React.FC = () => {
             </PressWrapper>
           )}
           ItemSeparatorComponent={() => <ItemSeparator />}
+          ListEmptyComponent={() => (
+            <EmptyList message="Nenhum resultado disponivel" />
+          )}
         />
         <IconButton onPress={handleAdd}>
           <PlusIcon name="add" size={24} />
