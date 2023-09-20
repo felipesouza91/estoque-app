@@ -1,4 +1,5 @@
 import React from 'react'
+import { useAuth } from '../../hooks/useAuth'
 import {
   Container,
   Icon,
@@ -8,13 +9,19 @@ import {
   TitleContainer,
 } from './styles'
 const Header: React.FC = () => {
+  const { logout } = useAuth()
+
+  function handleLogout() {
+    logout()
+  }
+
   return (
     <Container>
       <TitleContainer>
         <Span>Bem Vindo</Span>
         <Text>Felipe Souza</Text>
       </TitleContainer>
-      <IconButton>
+      <IconButton onPress={handleLogout}>
         <Icon name="log-out" size={26} />
       </IconButton>
     </Container>
