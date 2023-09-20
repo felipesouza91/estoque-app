@@ -72,11 +72,12 @@ const InputSearch: React.FC<IIpuntSearProps> = ({
           <Input placeholder="Pesquisar" onChangeText={setQuery} />
           <ResultList
             data={searchResult}
+            keyExtractor={(item) => item.index.toString()}
             showsVerticalScrollIndicator={false}
             renderItem={({ item }) => (
               <Option onPress={() => handleSelectItem(item)}>
-                <OptionName>Nome do cliente: {item}</OptionName>
-                <OptionSubtitle>Codigo: {item}</OptionSubtitle>
+                <OptionName>Nome do cliente: {item.name}</OptionName>
+                <OptionSubtitle>Codigo: {item.name}</OptionSubtitle>
               </Option>
             )}
             ItemSeparatorComponent={() => <Separator />}
