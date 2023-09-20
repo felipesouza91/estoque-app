@@ -1,12 +1,16 @@
 import { MaterialIcons } from '@expo/vector-icons'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import styled from 'styled-components/native'
+
 export const Container = styled(SafeAreaView)`
   flex: 1;
   background-color: ${({ theme }) => theme.colors['gray-700']};
-  padding: 0 24px;
+  gap: 10px;
 `
-
+export const Content = styled.View`
+  padding: 0 24px;
+  flex: 1;
+`
 export const PressWrapper = styled.TouchableOpacity``
 
 export const BorrowingList = styled.FlatList.attrs({

@@ -9,7 +9,7 @@ export const Container = styled(SafeAreaView)`
 `
 export const Header = styled.View`
   flex-direction: row;
-  padding: 40px 32px 20px 32px;
+  padding: 50px 32px 20px 32px;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
@@ -43,3 +43,5 @@ export const Content = styled.FlatList.attrs({
 export const Separator = styled.View`
   height: 15px;
 `
+
+export const Press = styled.TouchableOpacity``
