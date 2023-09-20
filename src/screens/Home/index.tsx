@@ -7,6 +7,7 @@ import { AppStackNavigationProp } from '../../routes/app.stack.route'
 import {
   BorrowingList,
   Container,
+  Content,
   IconButton,
   ItemSeparator,
   PlusIcon,
@@ -25,9 +26,9 @@ const Home: React.FC = () => {
     navigation.navigate('NewBorrow')
   }
   return (
-    <>
+    <Container>
       <Header />
-      <Container>
+      <Content>
         <BorrowingList
           data={list}
           renderItem={({ item }) => (
@@ -43,8 +44,8 @@ const Home: React.FC = () => {
         <IconButton onPress={handleAdd}>
           <PlusIcon name="add" size={24} />
         </IconButton>
-      </Container>
-    </>
+      </Content>
+    </Container>
   )
 }
 

@@ -1,7 +1,9 @@
+import { useNavigation } from '@react-navigation/native'
 import React from 'react'
 import { View } from 'react-native'
 import { BorrowingItem } from '../../components/BorrowingItem'
 import EmptyList from '../../components/EmptyList'
+import { AppStackNavigationProp } from '../../routes/app.stack.route'
 import {
   Container,
   Content,
@@ -9,10 +11,17 @@ import {
   Header,
   HeaderTitle,
   IconButton,
+  Press,
   Separator,
 } from './styles'
 const data = [1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12]
 const History: React.FC = () => {
+  const nativation = useNavigation<AppStackNavigationProp>()
+
+  function handleNavigate(item: any) {
+    nativation.navigate('BorrowDetail', { data: item })
+  }
+
   return (
     <Container>
       <Header>
@@ -24,7 +33,11 @@ const History: React.FC = () => {
       </Header>
       <Content
         data={data}
-        renderItem={({ item }) => <BorrowingItem />}
+        renderItem={({ item }) => (
+          <Press onPress={() => handleNavigate(item)}>
+            <BorrowingItem />
+          </Press>
+        )}
         ItemSeparatorComponent={() => <Separator />}
         ListEmptyComponent={() => (
           <EmptyList message="Nenhum resultado disponivel" />

@@ -19,6 +19,10 @@ const formSchema = yup.object({
 
 type FormSchemaData = yup.InferType<typeof formSchema>
 
+interface Test {
+  data: string
+}
+
 const NewBorrow: React.FC = () => {
   const [showSignatureModal, setShowSignatureModal] = useState(false)
   const {
@@ -41,7 +45,6 @@ const NewBorrow: React.FC = () => {
       return
     }
     console.log(uri)
-    console.log(watch())
   }
 
   function handleValidateAndSignature(data: string) {
@@ -49,8 +52,16 @@ const NewBorrow: React.FC = () => {
     handleSignature(true)
   }
 
-  function searchCliente(query: string) {
-    return [1, 2, 3, 4, 5, 6].filter((item) => Number(query) === item)
+  function searchClient(query: string) {
+    console.log(query)
+    return [
+      { index: 1, name: 'teste1' },
+      { index: 2, name: 'teste2' },
+      { index: 3, name: 'teste3' },
+      { index: 4, name: 'teste4' },
+      { index: 5, name: 'teste5' },
+      { index: 6, name: 'teste6' },
+    ].filter((item) => Number(query) === item.index)
   }
 
   return (
@@ -66,7 +77,7 @@ const NewBorrow: React.FC = () => {
               <InputSearch
                 placeholder="Selecione o cliente"
                 value={value}
-                searchFunction={searchCliente}
+                searchFunction={searchClient}
                 onSelectItem={onChange}
                 errorMessage={errors.client?.message}
               />
@@ -79,7 +90,7 @@ const NewBorrow: React.FC = () => {
               <InputSearch
                 placeholder="Selecione o técnico"
                 value={value}
-                searchFunction={searchCliente}
+                searchFunction={searchClient}
                 onSelectItem={onChange}
                 errorMessage={errors.technician?.message}
               />
@@ -92,7 +103,7 @@ const NewBorrow: React.FC = () => {
               <InputSearch
                 placeholder="Selecione o produto"
                 value={value}
-                searchFunction={searchCliente}
+                searchFunction={searchClient}
                 onSelectItem={onChange}
                 errorMessage={errors.product?.message}
               />
