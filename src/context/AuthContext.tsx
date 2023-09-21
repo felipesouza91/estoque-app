@@ -1,15 +1,20 @@
+import { AxiosError } from 'axios'
+import * as AuthSession from 'expo-auth-session'
+import * as WebBrowser from 'expo-web-browser'
 import jwtDecode from 'jwt-decode'
 import React, { ReactNode, createContext, useEffect, useState } from 'react'
+import { Linking } from 'react-native'
 import { api } from '../api'
 import { UserDTO } from '../services/dto/UserDTO'
 import {
+  loadTokenFromLocalStorage,
   removeTokenFromLocalStorage,
   saveTokenInLocalStorage,
 } from '../services/localStorage/TokenLocalStorage'
 import {
   loadUserFromLocalStorage,
   removeUserFromLocalStorage,
-  saveUserInLocalStorate,
+  saveUserInLocalStorage,
 } from '../services/localStorage/UserLocalStrorage'
 
 interface ITokenResponse {
@@ -34,14 +39,16 @@ interface ITokenData {
 
 interface IAuthContextData {
   user?: UserDTO
-  loadTokenWithCode: (
-    code: string,
-    codeVerifier: string,
-    redirectUri: string,
-  ) => void
-  logout: () => void
-}
 
+  logout: () => void
+  login: () => Promise<void>
+}
+WebBrowser.maybeCompleteAuthSession({
+  skipRedirectCheck: true,
+})
+const redirectUriApp = AuthSession.makeRedirectUri({
+  scheme: 'apptecredirect',
+})
 const AuthContext = createContext<IAuthContextData>({} as IAuthContextData)
 
 interface IAuthProviderProps {
@@ -50,6 +57,27 @@ interface IAuthProviderProps {
 
 const AuthContextProvider: React.FC<IAuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<UserDTO | undefined>({} as UserDTO)
+
+  const [request, result, promptAsync] = AuthSession.useAuthRequest(
+    {
+      responseType: 'code',
+      clientId: 'angular',
+      clientSecret: 'password',
+      state: '123456789',
+      redirectUri: redirectUriApp,
+      scopes: ['READ', 'WRITE'],
+      codeChallengeMethod: AuthSession.CodeChallengeMethod.S256,
+    },
+    {
+      authorizationEndpoint: 'http://192.168.0.113:8080/oauth2/authorize',
+      tokenEndpoint: 'http://192.168.0.113:8080/oauth2/token',
+    },
+  )
+
+  async function authLogin() {
+    await promptAsync({})
+  }
+
   async function loadTokenWithCode(
     code: string,
     codeVerifier: string,
@@ -72,7 +100,7 @@ const AuthContextProvider: React.FC<IAuthProviderProps> = ({ children }) => {
           refreshToken: data.refresh_token,
         })
         const userData = jwtDecode<ITokenData>(data.access_token)
-        await saveUserInLocalStorate({
+        await saveUserInLocalStorage({
           name: userData.userName,
           permissions: userData.authorities,
         })
@@ -80,21 +108,42 @@ const AuthContextProvider: React.FC<IAuthProviderProps> = ({ children }) => {
       }
     } catch (error) {
       console.log(error)
+      const { response } = error as AxiosError
+      console.log(response.data)
     }
   }
 
   async function logout() {
+    const token = await loadTokenFromLocalStorage()
+    if (!token) {
+      return
+    }
+    await Linking.openURL(
+      `http://192.168.0.113:8080/logout?redirectTo=${redirectUriApp}`,
+    )
     await removeTokenFromLocalStorage()
     await removeUserFromLocalStorage()
     setUser(undefined)
   }
 
   useEffect(() => {
+    console.log(request)
+    console.log(result)
+    if (result?.type === 'success') {
+      loadTokenWithCode(
+        result.params.code,
+        request.codeVerifier,
+        redirectUriApp,
+      )
+    }
+  }, [request, result])
+
+  useEffect(() => {
     loadUserFromLocalStorage().then((data) => setUser(data))
   }, [])
 
   return (
-    <AuthContext.Provider value={{ user, loadTokenWithCode, logout }}>
+    <AuthContext.Provider value={{ user, logout, login: authLogin }}>
       {children}
     </AuthContext.Provider>
   )
