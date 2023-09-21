@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { USER_STORAGE } from '../../config/storageConfig'
 import { UserDTO } from '../dto/UserDTO'
 
-export async function saveUserInLocalStorate(user: UserDTO) {
+export async function saveUserInLocalStorage(user: UserDTO) {
   await AsyncStorage.setItem(USER_STORAGE, JSON.stringify(user))
 }
 
