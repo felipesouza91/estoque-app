@@ -3,6 +3,7 @@ import React from 'react'
 import { BorrowingItem } from '../../components/BorrowingItem'
 import EmptyList from '../../components/EmptyList'
 import Header from '../../components/Header'
+import { useAuth } from '../../hooks/useAuth'
 import { AppStackNavigationProp } from '../../routes/app.stack.route'
 import {
   BorrowingList,
@@ -17,11 +18,10 @@ const list = [1, 2, 3, 4, 5, 6, 7, 8]
 
 const Home: React.FC = () => {
   const navigation = useNavigation<AppStackNavigationProp>()
-
+  const { user } = useAuth()
   function handleNavigate(item) {
     navigation.navigate('BorrowDetail', item)
   }
-
   function handleAdd() {
     navigation.navigate('NewBorrow')
   }
