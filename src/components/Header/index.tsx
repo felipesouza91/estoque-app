@@ -9,7 +9,7 @@ import {
   TitleContainer,
 } from './styles'
 const Header: React.FC = () => {
-  const { logout } = useAuth()
+  const { logout, user } = useAuth()
 
   function handleLogout() {
     logout()
@@ -19,7 +19,7 @@ const Header: React.FC = () => {
     <Container>
       <TitleContainer>
         <Span>Bem Vindo</Span>
-        <Text>Felipe Souza</Text>
+        <Text>{user.name}</Text>
       </TitleContainer>
       <IconButton onPress={handleLogout}>
         <Icon name="log-out" size={26} />
