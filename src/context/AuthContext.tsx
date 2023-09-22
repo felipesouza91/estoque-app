@@ -1,9 +1,7 @@
-import { AxiosError } from 'axios'
 import * as AuthSession from 'expo-auth-session'
 import * as WebBrowser from 'expo-web-browser'
 import jwtDecode from 'jwt-decode'
 import React, { ReactNode, createContext, useEffect, useState } from 'react'
-import { Linking } from 'react-native'
 import { api } from '../api'
 import { UserDTO } from '../services/dto/UserDTO'
 import {
@@ -104,12 +102,12 @@ const AuthContextProvider: React.FC<IAuthProviderProps> = ({ children }) => {
           name: userData.userName,
           permissions: userData.authorities,
         })
+
+        api.defaults.headers.common.Authorization = `Bearer ${data.access_token}`
         setUser({ name: userData.userName, permissions: userData.authorities })
       }
     } catch (error) {
       console.log(error)
-      const { response } = error as AxiosError
-      console.log(response.data)
     }
   }
 
@@ -118,7 +116,7 @@ const AuthContextProvider: React.FC<IAuthProviderProps> = ({ children }) => {
     if (!token) {
       return
     }
-    await Linking.openURL(
+    await WebBrowser.openBrowserAsync(
       `http://192.168.0.113:8080/logout?redirectTo=${redirectUriApp}`,
     )
     await removeTokenFromLocalStorage()
@@ -127,8 +125,6 @@ const AuthContextProvider: React.FC<IAuthProviderProps> = ({ children }) => {
   }
 
   useEffect(() => {
-    console.log(request)
-    console.log(result)
     if (result?.type === 'success') {
       loadTokenWithCode(
         result.params.code,
@@ -138,8 +134,15 @@ const AuthContextProvider: React.FC<IAuthProviderProps> = ({ children }) => {
     }
   }, [request, result])
 
+  async function startApplication() {
+    const data = await loadUserFromLocalStorage()
+    const { token } = await loadTokenFromLocalStorage()
+    api.defaults.headers.common.Authorization = `Bearer ${token}`
+    setUser(data)
+  }
+
   useEffect(() => {
-    loadUserFromLocalStorage().then((data) => setUser(data))
+    startApplication()
   }, [])
 
   return (
