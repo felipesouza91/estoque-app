@@ -17,11 +17,17 @@ import {
   TextInput,
 } from './styles'
 
+export interface ISearchItem {
+  id: string
+  title: string
+  subTitle: string
+}
+
 interface IIpuntSearProps {
   placeholder?: string
   value?: string
   errorMessage?: string
-  searchFunction: (query: string) => any
+  searchFunction: (query: string) => Promise<ISearchItem[]>
   onSelectItem: (selectItem: any) => void
 }
 
@@ -32,27 +38,32 @@ const InputSearch: React.FC<IIpuntSearProps> = ({
   onSelectItem,
   searchFunction,
 }) => {
+  const [title, setTitle] = useState(value)
   const [query, setQuery] = useState('')
-  const [searchResult, setSearchResult] = useState<number[]>([
-    1, 2, 3, 4, 5, 6, 7,
-  ])
+  const [searchResult, setSearchResult] = useState<ISearchItem[]>([])
   const [showModal, setShowModal] = useState(false)
 
   useEffect(() => {
-    const result = searchFunction(query)
-    setSearchResult(result)
+    if (query.length > 3) {
+      searchFunction(query).then((result) => {
+        console.log('aqui' + result)
+        setSearchResult(result)
+      })
+    }
   }, [query])
 
-  function handleSelectItem(item: any) {
+  function handleSelectItem(item: ISearchItem) {
+    console.log(item)
     onSelectItem(item)
+    setTitle(item.title)
+    setSearchResult([])
     setShowModal(!showModal)
   }
-
   return (
     <Container onPress={() => setShowModal(!showModal)}>
       <InputContainer error={!!errorMessage}>
-        {value ? (
-          <TextInput>{value}</TextInput>
+        {title ? (
+          <TextInput>{title}</TextInput>
         ) : (
           <Placeholder>{placeholder}</Placeholder>
         )}
@@ -72,12 +83,12 @@ const InputSearch: React.FC<IIpuntSearProps> = ({
           <Input placeholder="Pesquisar" onChangeText={setQuery} />
           <ResultList
             data={searchResult}
-            keyExtractor={(item) => item.index.toString()}
+            keyExtractor={(item) => item.id}
             showsVerticalScrollIndicator={false}
             renderItem={({ item }) => (
               <Option onPress={() => handleSelectItem(item)}>
-                <OptionName>Nome do cliente: {item.name}</OptionName>
-                <OptionSubtitle>Codigo: {item.name}</OptionSubtitle>
+                <OptionName>Nome do cliente: {item.title}</OptionName>
+                <OptionSubtitle>Codigo: {item.subTitle}</OptionSubtitle>
               </Option>
             )}
             ItemSeparatorComponent={() => <Separator />}
