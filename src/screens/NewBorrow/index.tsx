@@ -8,12 +8,31 @@ import HeaderTitle from '../../components/HeaderTitle'
 import { Input } from '../../components/Input'
 import { InputSearch } from '../../components/InputSearch'
 import Signature from '../../components/Signature'
+import { findClientsByName } from '../../services/clients/findClientsByName'
 import { Container, Form, InputForm } from './styles'
 
 const formSchema = yup.object({
-  client: yup.string().required('O campo é obrigatório'),
-  product: yup.string().required('O campo é obrigatório'),
-  technician: yup.string().required('O campo é obrigatório'),
+  client: yup
+    .object({
+      id: yup.string(),
+      tradingName: yup.string(),
+      companyName: yup.string(),
+    })
+    .required('O campo é obrigatório'),
+  product: yup
+    .object({
+      id: yup.string(),
+      tradingName: yup.string(),
+      companyName: yup.string(),
+    })
+    .required('O campo é obrigatório'),
+  technician: yup
+    .object({
+      id: yup.string(),
+      tradingName: yup.string(),
+      companyName: yup.string(),
+    })
+    .required('O campo é obrigatório'),
   orderNumber: yup.number(),
 })
 
@@ -46,22 +65,19 @@ const NewBorrow: React.FC = () => {
     }
     console.log(uri)
   }
-
   function handleValidateAndSignature(data: string) {
     console.log(data)
     handleSignature(true)
   }
 
-  function searchClient(query: string) {
-    console.log(query)
-    return [
-      { index: 1, name: 'teste1' },
-      { index: 2, name: 'teste2' },
-      { index: 3, name: 'teste3' },
-      { index: 4, name: 'teste4' },
-      { index: 5, name: 'teste5' },
-      { index: 6, name: 'teste6' },
-    ].filter((item) => Number(query) === item.index)
+  async function searchClient(query: string) {
+    const data = await findClientsByName(query)
+    const formatedData = data.map((item) => ({
+      id: item.id.toString(),
+      title: item.tradingName,
+      subTitle: item.tradingName,
+    }))
+    return Promise.resolve(formatedData)
   }
 
   return (
@@ -76,7 +92,7 @@ const NewBorrow: React.FC = () => {
             render={({ field: { onChange, onBlur, value } }) => (
               <InputSearch
                 placeholder="Selecione o cliente"
-                value={value}
+                value={value?.companyName}
                 searchFunction={searchClient}
                 onSelectItem={onChange}
                 errorMessage={errors.client?.message}
@@ -89,7 +105,7 @@ const NewBorrow: React.FC = () => {
             render={({ field: { onChange, onBlur, value } }) => (
               <InputSearch
                 placeholder="Selecione o técnico"
-                value={value}
+                value={value?.companyName}
                 searchFunction={searchClient}
                 onSelectItem={onChange}
                 errorMessage={errors.technician?.message}
@@ -102,7 +118,7 @@ const NewBorrow: React.FC = () => {
             render={({ field: { onChange, onBlur, value } }) => (
               <InputSearch
                 placeholder="Selecione o produto"
-                value={value}
+                value={value?.companyName}
                 searchFunction={searchClient}
                 onSelectItem={onChange}
                 errorMessage={errors.product?.message}
