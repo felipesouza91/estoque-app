@@ -1,6 +1,7 @@
+import { FlatList } from 'react-native'
 import { css } from 'styled-components'
 import styled from 'styled-components/native'
-
+import { ISearchItem } from '.'
 interface IInputContainerProps {
   error?: boolean
 }
@@ -39,7 +40,7 @@ export const TextInput = styled.Text`
 export const SearchModal = styled.Modal``
 
 export const ModalContainer = styled.View`
-  height: 50%;
+  height: 75%;
   width: 100%;
   position: absolute;
   bottom: 0;
@@ -59,7 +60,9 @@ export const HeaderTitle = styled.Text`
   align-self: center;
 `
 
-export const ResultList = styled.FlatList.attrs({
+export const ResultList = styled(
+  FlatList as typeof FlatList<ISearchItem>,
+).attrs({
   contentContainerStyle: {
     paddingBottom: 10,
   },
