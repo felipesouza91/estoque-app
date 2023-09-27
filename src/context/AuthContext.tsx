@@ -39,7 +39,7 @@ interface IAuthContextData {
   user?: UserDTO
   isLoading: boolean
   logout: () => void
-  login: () => Promise<void>
+  login: (serverUrl: string) => Promise<void>
 }
 WebBrowser.maybeCompleteAuthSession({
   skipRedirectCheck: true,
@@ -67,12 +67,18 @@ const AuthContextProvider: React.FC<IAuthProviderProps> = ({ children }) => {
       codeChallengeMethod: AuthSession.CodeChallengeMethod.S256,
     },
     {
-      authorizationEndpoint: 'http://192.168.0.113:8080/oauth2/authorize',
-      tokenEndpoint: 'http://192.168.0.113:8080/oauth2/token',
+      authorizationEndpoint: `http://local/oauth2/authorize`,
+      tokenEndpoint: `http://local/oauth2/token`,
     },
   )
 
-  async function authLogin() {
+  async function authLogin(serverUrl: string) {
+    const params = request.url.substring(
+      request.url.indexOf('?'),
+      request.url.length,
+    )
+    request.url = `http://${serverUrl}/oauth2/authorize${params}`
+    api.defaults.baseURL = `http://${serverUrl}`
     await promptAsync({})
   }
 
@@ -138,12 +144,16 @@ const AuthContextProvider: React.FC<IAuthProviderProps> = ({ children }) => {
   }, [request, result])
 
   async function startApplication() {
-    setIsLoading(true)
-    const data = await loadUserFromLocalStorage()
-    const { token } = await loadTokenFromLocalStorage()
-    api.defaults.headers.common.Authorization = `Bearer ${token}`
-    setUser(data)
-    setIsLoading(false)
+    try {
+      setIsLoading(true)
+      const data = await loadUserFromLocalStorage()
+      const { token } = await loadTokenFromLocalStorage()
+      api.defaults.headers.common.Authorization = `Bearer ${token}`
+      setUser(data)
+    } catch (error) {
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   useEffect(() => {
