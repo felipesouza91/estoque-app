@@ -14,6 +14,10 @@ import {
   removeUserFromLocalStorage,
   saveUserInLocalStorage,
 } from '../services/localStorage/UserLocalStrorage'
+import {
+  loadUrlFromLocalStorage,
+  saveUrlInLocalStorage,
+} from '../services/localStorage/serverUrl'
 
 interface ITokenResponse {
   access_token: string
@@ -73,6 +77,7 @@ const AuthContextProvider: React.FC<IAuthProviderProps> = ({ children }) => {
   )
 
   async function authLogin(serverUrl: string) {
+    await saveUrlInLocalStorage(serverUrl)
     const params = request.url.substring(
       request.url.indexOf('?'),
       request.url.length,
@@ -146,6 +151,8 @@ const AuthContextProvider: React.FC<IAuthProviderProps> = ({ children }) => {
   async function startApplication() {
     try {
       setIsLoading(true)
+      const url = await loadUrlFromLocalStorage()
+      api.defaults.baseURL = `http://${url}`
       const data = await loadUserFromLocalStorage()
       const { token } = await loadTokenFromLocalStorage()
       api.defaults.headers.common.Authorization = `Bearer ${token}`
