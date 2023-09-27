@@ -37,7 +37,7 @@ interface ITokenData {
 
 interface IAuthContextData {
   user?: UserDTO
-
+  isLoading: boolean
   logout: () => void
   login: () => Promise<void>
 }
@@ -55,7 +55,7 @@ interface IAuthProviderProps {
 
 const AuthContextProvider: React.FC<IAuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<UserDTO | undefined>({} as UserDTO)
-
+  const [isLoading, setIsLoading] = useState(false)
   const [request, result, promptAsync] = AuthSession.useAuthRequest(
     {
       responseType: 'code',
@@ -82,6 +82,7 @@ const AuthContextProvider: React.FC<IAuthProviderProps> = ({ children }) => {
     redirectUri: string,
   ) {
     try {
+      setIsLoading(true)
       const { data } = await api.post<ITokenResponse>(
         '/oauth2/token',
         `grant_type=authorization_code&code=${code}&redirect_uri=${redirectUri}&code_verifier=${codeVerifier}`,
@@ -108,6 +109,8 @@ const AuthContextProvider: React.FC<IAuthProviderProps> = ({ children }) => {
       }
     } catch (error) {
       console.log(error)
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -135,10 +138,12 @@ const AuthContextProvider: React.FC<IAuthProviderProps> = ({ children }) => {
   }, [request, result])
 
   async function startApplication() {
+    setIsLoading(true)
     const data = await loadUserFromLocalStorage()
     const { token } = await loadTokenFromLocalStorage()
     api.defaults.headers.common.Authorization = `Bearer ${token}`
     setUser(data)
+    setIsLoading(false)
   }
 
   useEffect(() => {
@@ -146,7 +151,7 @@ const AuthContextProvider: React.FC<IAuthProviderProps> = ({ children }) => {
   }, [])
 
   return (
-    <AuthContext.Provider value={{ user, logout, login: authLogin }}>
+    <AuthContext.Provider value={{ user, logout, login: authLogin, isLoading }}>
       {children}
     </AuthContext.Provider>
   )
