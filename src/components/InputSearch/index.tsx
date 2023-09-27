@@ -46,7 +46,6 @@ const InputSearch: React.FC<IIpuntSearProps> = ({
   useEffect(() => {
     if (query.length > 3) {
       searchFunction(query).then((result) => {
-        console.log('aqui' + result)
         setSearchResult(result)
       })
     }
