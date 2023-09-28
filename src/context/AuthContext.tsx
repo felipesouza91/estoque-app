@@ -49,7 +49,7 @@ WebBrowser.maybeCompleteAuthSession({
   skipRedirectCheck: true,
 })
 const redirectUriApp = AuthSession.makeRedirectUri({
-  scheme: 'apptecredirect',
+  scheme: 'dev.fsantana.apptec',
 })
 const AuthContext = createContext<IAuthContextData>({} as IAuthContextData)
 
