@@ -31,11 +31,17 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "dev.fsantana.estoqueapp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "scheme": "dev.fsantana.estoqueapp"
+    "scheme": "dev.fsantana.estoqueapp",
+    "extra": {
+      "eas": {
+        "projectId": "f7bf0d70-a566-49c7-8ba6-485a52946ae6"
+      }
+    }
   }
 }
