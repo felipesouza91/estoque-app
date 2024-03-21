@@ -26,6 +26,6 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "scheme": "dev.fsantana.apptec"
+    "scheme": "dev.fsantana.estoqueapp"
   }
 }
