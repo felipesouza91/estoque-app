@@ -5,6 +5,7 @@ import {
   useFonts,
 } from '@expo-google-fonts/roboto'
 import { StatusBar } from 'expo-status-bar'
+import 'react-native-gesture-handler'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { ThemeProvider } from 'styled-components'
 import { AuthContextProvider } from './src/context/AuthContext'
