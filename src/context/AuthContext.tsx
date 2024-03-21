@@ -49,7 +49,8 @@ WebBrowser.maybeCompleteAuthSession({
   skipRedirectCheck: true,
 })
 const redirectUriApp = AuthSession.makeRedirectUri({
-  scheme: 'dev.fsantana.apptec',
+  path: 'authorize',
+  scheme: 'dev.fsantana.estoqueapp',
 })
 const AuthContext = createContext<IAuthContextData>({} as IAuthContextData)
 
@@ -64,10 +65,9 @@ const AuthContextProvider: React.FC<IAuthProviderProps> = ({ children }) => {
     {
       responseType: 'code',
       clientId: 'angular',
-      clientSecret: 'password',
       state: '123456789',
       redirectUri: redirectUriApp,
-      scopes: ['READ', 'WRITE'],
+      scopes: ['READ WRITE'],
       codeChallengeMethod: AuthSession.CodeChallengeMethod.S256,
     },
     {
@@ -78,11 +78,10 @@ const AuthContextProvider: React.FC<IAuthProviderProps> = ({ children }) => {
 
   async function authLogin(serverUrl: string) {
     await saveUrlInLocalStorage(serverUrl)
-    const params = request.url.substring(
-      request.url.indexOf('?'),
-      request.url.length,
+    const params = encodeURI(
+      `response_type=${request.responseType}&client_id=${request.clientId}&state=${request.state}&redirect_uri=${request.redirectUri}&scope=${request.scopes}&code_challange=${request.codeChallenge}&code_challange_method=${request.codeChallengeMethod}`,
     )
-    request.url = `http://${serverUrl}/oauth2/authorize${params}`
+    request.url = `http://${serverUrl}/oauth2/authorize?${params}`
     api.defaults.baseURL = `http://${serverUrl}`
     await promptAsync({})
   }
@@ -126,12 +125,13 @@ const AuthContextProvider: React.FC<IAuthProviderProps> = ({ children }) => {
   }
 
   async function logout() {
+    const serverUrl = await loadUrlFromLocalStorage()
     const token = await loadTokenFromLocalStorage()
     if (!token) {
       return
     }
     await WebBrowser.openBrowserAsync(
-      `http://192.168.0.113:8080/logout?redirectTo=${redirectUriApp}`,
+      `http://${serverUrl}/logout?redirectTo=${redirectUriApp}`,
     )
     await removeTokenFromLocalStorage()
     await removeUserFromLocalStorage()
@@ -174,4 +174,4 @@ const AuthContextProvider: React.FC<IAuthProviderProps> = ({ children }) => {
   )
 }
 
-export { AuthContextProvider, AuthContext }
+export { AuthContext, AuthContextProvider }
